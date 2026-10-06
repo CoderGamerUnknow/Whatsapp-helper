@@ -1,0 +1,28 @@
+[Unit]
+Description=WhatsApp Family Assistant Bot - Node.js Baileys bridge (WhatsApp Web session)
+Documentation=file:///opt/family-whatsapp-bot/knowledge.md
+After=network-online.target family-bot.service
+Wants=network-online.target
+# The bridge forwards to the backend; start after it (it retries anyway):
+After=family-bot.service
+
+[Service]
+Type=simple
+User=familybot
+Group=familybot
+WorkingDirectory=/opt/family-whatsapp-bot/bridge
+EnvironmentFile=-/opt/family-whatsapp-bot/.env
+Environment=NODE_ENV=production
+# AUTH_DIR holds the WhatsApp Web session (QR login) — back it up, keep it secret.
+Environment=AUTH_DIR=/opt/family-whatsapp-bot/bridge/auth
+Environment=MEDIA_DIR=/tmp/family-bot-media
+ExecStart=/usr/bin/node index.js
+Restart=always
+RestartSec=5
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/family-whatsapp-bot /tmp
+
+[Install]
+WantedBy=multi-user.target

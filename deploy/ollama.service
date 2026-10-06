@@ -1,0 +1,24 @@
+[Unit]
+Description=WhatsApp Family Assistant Bot - Ollama local LLM server
+Documentation=https://ollama.com/docs
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=familybot
+Group=familybot
+# Ollama's official installer usually ships its own unit; keep this copy only
+# if you installed Ollama manually (e.g. the raw `ollama` binary).
+ExecStart=/usr/local/bin/ollama serve
+Environment=OLLAMA_HOST=127.0.0.1:11434
+# Keep models resident between requests so a text/vision swap never has to
+# reload weights from disk mid-conversation (review fix #3).
+Environment=OLLAMA_KEEP_ALIVE=30m
+Restart=always
+RestartSec=3
+# Give Ollama permission to use the GPU when present.
+SupplementaryGroups=video
+
+[Install]
+WantedBy=multi-user.target

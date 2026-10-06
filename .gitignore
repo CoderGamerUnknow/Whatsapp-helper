@@ -1,0 +1,25 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# App data (never commit the family ledger or sessions)
+*.db
+*.db-wal
+*.db-shm
+.env
+family_whatsapp_bot/media/
+
+# Node
+bridge/node_modules/
+bridge/auth/
+bridge/*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
