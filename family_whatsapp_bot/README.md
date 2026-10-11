@@ -115,7 +115,7 @@ curl -s localhost:8000/api/expenses | python -m json.tool
 
 ```bash
 pip install -r family_whatsapp_bot/requirements.txt
-python -m pytest family_whatsapp_bot/tests -q      # 95 tests, fully offline
+python -m pytest family_whatsapp_bot/tests -q      # 101 tests (99 passed, 2 skipped), fully offline
 node  --check bridge/index.js                      # bridge syntax
 bash  -n deploy/install.sh                         # installer syntax
 ```
@@ -161,7 +161,7 @@ load/unlock hop whenever a photo arrives.
 family_whatsapp_bot/     this package: config, db, transcriber, engine,
                          server, prompts, knowledge.md, README.md,
                          requirements.txt
-family_whatsapp_bot/tests/   95 offline tests (pytest)
+family_whatsapp_bot/tests/   101 offline tests (99 passed, 2 skipped, pytest)
 bridge/                  Node.js Baileys bridge (QR session, media download, reply send)
 deploy/                  install.sh, systemd units, .env.example
 knowledge.md             architecture cheat sheet (in this package)
