@@ -23,7 +23,12 @@ from pathlib import Path
 # .env loading (optional dependency — python-dotenv if installed, else a tiny
 # built-in parser so the project has zero hard dependencies beyond FastAPI).
 # ---------------------------------------------------------------------------
-_ENV_PATH = Path(__file__).resolve().parent / ".env"
+_ENV_PATHS = [
+    # Package-local override first…
+    Path(__file__).resolve().parent / ".env",
+    # …then the project root (what README.md / deploy/install.sh create).
+    Path(__file__).resolve().parent.parent / ".env",
+]
 
 
 def _load_env_file(path: Path) -> None:
@@ -44,7 +49,8 @@ def _load_env_file(path: Path) -> None:
         pass
 
 
-_load_env_file(_ENV_PATH)
+for _env_file in _ENV_PATHS:
+    _load_env_file(_env_file)
 
 
 def _env(name: str, default: str) -> str:

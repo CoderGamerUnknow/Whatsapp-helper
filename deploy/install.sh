@@ -120,7 +120,7 @@ else sudo useradd --system --home "$REPO_DIR" --shell /usr/sbin/nologin "$SERVIC
 echo "== 3/7 python venv + deps =="
 python3 -m venv "$VENV_DIR"
 "$VENV_DIR/bin/pip" install --upgrade pip -q
-if ! "$VENV_DIR/bin/pip" install -r "$REPO_DIR/requirements.txt" -q; then
+if ! "$VENV_DIR/bin/pip" install -r "$REPO_DIR/family_whatsapp_bot/requirements.txt" -q; then
   warn "full requirements failed (faster-whisper can be picky) — installing core deps"
   "$VENV_DIR/bin/pip" install 'fastapi>=0.115' 'uvicorn[standard]>=0.30' \
       'httpx>=0.27' 'pydantic>=2.7' pytest -q

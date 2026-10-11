@@ -26,6 +26,9 @@ WhatsApp ⇄ bridge/ (Baileys, :8790) ⇄ server.py (FastAPI, :8000) ⇄ Ollama 
 
 ## Quick start (Linux, one shot)
 
+All commands below run from the **repository root** (the folder containing
+`family_whatsapp_bot/`, `bridge/` and `deploy/`).
+
 ```bash
 sudo ./deploy/install.sh            # apt deps, venv, pip, npm, ollama, systemd
 nano .env                           # ← set YOUR 3 numbers in WHITELISTED_NUMBERS
@@ -33,12 +36,15 @@ journalctl -u family-bridge -f      # scan the QR code with WhatsApp
 ./deploy/install.sh --check         # verify everything is green
 ```
 
+> `config.py` reads `.env` from the repository root *or* from
+> `family_whatsapp_bot/.env` (the latter wins) — either location works.
+
 ## Quick start (manual / dev)
 
 ```bash
 # 1. backend
 python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r family_whatsapp_bot/requirements.txt
 cp deploy/.env.example .env         # edit WHITELISTED_NUMBERS!
 
 # 2. LLM (one multimodal model for text + images)
@@ -108,8 +114,8 @@ curl -s localhost:8000/api/expenses | python -m json.tool
 ## Tests
 
 ```bash
-pip install -r requirements.txt
-python -m pytest family_whatsapp_bot/tests -q      # 84 tests, fully offline
+pip install -r family_whatsapp_bot/requirements.txt
+python -m pytest family_whatsapp_bot/tests -q      # 95 tests, fully offline
 node  --check bridge/index.js                      # bridge syntax
 bash  -n deploy/install.sh                         # installer syntax
 ```
@@ -119,7 +125,7 @@ deterministic on CI.
 
 ## Configuration
 
-Everything lives in `.env` (template: [deploy/.env.example](deploy/.env.example)):
+Everything lives in `.env` (template: [deploy/.env.example](../deploy/.env.example)):
 
 | var | default | meaning |
 |---|---|---|
@@ -152,11 +158,13 @@ load/unlock hop whenever a photo arrives.
 ## Repository layout
 
 ```
-family_whatsapp_bot/     Python backend (config, db, transcriber, engine, server, prompts)
+family_whatsapp_bot/     this package: config, db, transcriber, engine,
+                         server, prompts, knowledge.md, README.md,
+                         requirements.txt
+family_whatsapp_bot/tests/   95 offline tests (pytest)
 bridge/                  Node.js Baileys bridge (QR session, media download, reply send)
 deploy/                  install.sh, systemd units, .env.example
-family_whatsapp_bot/tests/   84 offline tests (pytest)
-knowledge.md → family_whatsapp_bot/knowledge.md   architecture cheat sheet
+knowledge.md             architecture cheat sheet (in this package)
 ```
 
 ## Security notes
